@@ -26,3 +26,13 @@ Route::post('posts/create','Api\PostController@create')->middleware('JWTAuth');
 Route::post('posts/delete','Api\PostController@delete')->middleware('JWTAuth');
 Route::post('posts/update','Api\PostController@update')->middleware('JWTAuth');
 Route::get('posts','Api\PostController@posts')->middleware('JWTAuth');
+
+//comment
+Route::post('comments/create','Api\CommentController@create')->middleware('JWTAuth');
+Route::post('comments/delete','Api\CommentController@delete')->middleware('JWTAuth');
+Route::post('comments/update','Api\CommentController@update')->middleware('JWTAuth');
+Route::get('posts/comments','Api\CommentController@comments')->middleware('JWTAuth');
+
+
+//like
+Route::get('posts/likes','Api\LikeController@like')->middleware('JWTAuth');
