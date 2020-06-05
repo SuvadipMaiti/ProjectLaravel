@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\File;
 use App\User;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\JWTAuth as JWTAuthJWTAuth;
@@ -69,6 +70,43 @@ class AuthController extends Controller
             ]);
         }
      
+
+    }
+
+    public function profile(Request $request){
+        
+        try{
+            $user = User::find(Auth::user()->id);
+            $user->name = $request->name;
+            
+            //check if post has photo
+            if($request->hasFile('photo'))
+            {
+                
+                $img_file = $request->photo;
+                $img_new_name = time().$img_file->getClientOriginalName();
+                //check if post has photo to delete
+                if($img_new_name != $user->photo){
+                    $image_path = public_path().'/uploads/images/'.$user->photo;
+                    if(File::exists($image_path)) {
+                        File::delete($image_path);
+                    }
+                    $img_file->move('uploads/images',$img_new_name);
+                    $user->photo = $img_new_name;
+                }
+            } 
+            $user->update();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated'
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                'success' => false,
+                'message' => $e
+            ]);
+        }
 
     }
     

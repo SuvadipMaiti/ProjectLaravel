@@ -20,6 +20,8 @@ Route::post('login','Api\AuthController@login');
 Route::post('register','Api\AuthController@register');
 Route::get('logout','Api\AuthController@logout');
 
+Route::post('profile','Api\AuthController@profile')->middleware('JWTAuth');
+
 
 //post
 Route::post('posts/create','Api\PostController@create')->middleware('JWTAuth');
